@@ -17,31 +17,24 @@ Since there are no unset bits, it remains the same.
 
 APPROACH:
 To set the rightmost unset bit in the binary representation of N, we can follow these steps:
-1. Check if N+1 is a power of 2. If it is, then N already has all bits set, so return N.
-2. Otherwise, perform the bitwise OR operation between N and (N+1). This will set the rightmost unset bit.
-3. Return the result.
+1. Iterate through all 32 bits of the integer starting from the least significant bit (LSB).
+2. For each bit position i, check whether the bit is unset (i.e., 0) using bitwise AND:
+   if ((N & (1 << i)) == 0)
+3. Once the first unset bit is found, set it using bitwise OR:
+   N | (1 << i)
+4. Return the modified value immediately.
+5. If all bits are already set (no unset bit found), return N as it is.
 
-1. Check if N+1 is a power of 2 by using the isPowerOfTwo function.
-2. If it is, return N as it already has all bits set.
-3. Otherwise, perform the bitwise OR operation between N and (N+1) and return the result.
-
-CODE:*/
-bool isPowerOfTwo(int n) {
-    if(n <= 0)
-        return false;
-    if(n & (n-1))
-        return false;
-    return true;
+CODE:
+*/
+int setRightmostUnsetBit(int N) {
+    for (int i = 0; i < 32; i++) {
+        if ((N & (1 << i)) == 0) {
+            return N | (1 << i); // Set the first 0-bit found
+        }
+    }
+    return N; // All bits are already set
 }
 
-int setBit(int N)
-{
-    if(isPowerOfTwo(N+1))
-        return N;
-
-    int ans = (N | (N+1));
-    return ans;
-}
-
-// Time Complexity: O(1)
+// Time Complexity: O(log N)
 // Space Complexity: O(1)
