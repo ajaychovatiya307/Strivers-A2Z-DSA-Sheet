@@ -18,17 +18,25 @@ To count the number of prime numbers less than a given number n, we can use the 
 
 CODE:*/
 int countPrimes(int n) {
-    vector<bool> primes(n + 1, true);
-    int cnt = 0;
-    for (long long i = 2; i < n; i++) {
-        if (primes[i]) {
-            cnt++;
-            for (long long j = i * i; j <= n; j += i) {
-                primes[j] = false;
+    if (n <= 2) return 0;
+
+    vector<bool> isPrime(n, true); // primes from 0 to n-1
+    isPrime[0] = isPrime[1] = false;
+    int count = 0;
+
+    for (int i = 2; i * i < n; ++i) {
+        if (isPrime[i]) {
+            for (int j = i * i; j < n; j += i) {
+                isPrime[j] = false;
             }
         }
     }
-    return cnt;
+
+    for (int i = 2; i < n; ++i) {
+        if (isPrime[i]) count++;
+    }
+
+    return count;
 }
 
 // Time Complexity: O(n log log n)
